@@ -49,6 +49,17 @@ app.use(
 	})
 )
 
+// socket.io setup
+const http = require('http')
+const server = http.createServer(app)
+const { Server } = require('socket.io')
+const io = new Server(server)
+
+io.on('connection', socket => {
+	console.log('user connected')
+})
+
+
 
 // this middleware makes it so the client can use the Rails convention
 // of `Authorization: Token token=<token>` OR the Express convention of
@@ -78,7 +89,7 @@ app.use(userRoutes)
 app.use(errorHandler)
 
 // run API on designated port (4741 in this case)
-app.listen(port, () => {
+server.listen(port, () => {
 	console.log('listening on port ' + port)
 })
 
