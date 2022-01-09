@@ -49,11 +49,24 @@ app.use(
 	})
 )
 
-// socket.io setup
+//
 const http = require('http')
 const server = http.createServer(app)
 const { Server } = require('socket.io')
-const io = new Server(server)
+const io = new Server(server, {
+	cors: {
+		origins: ["*"],
+		handlePreflightRequest: (req, res) => {
+			res.writeHead(200, {
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Methods": "GET,POST",
+				"Access-Control-Allow-Headers": "you-get-one",
+				"Access-Control-Allow-Credentials": true
+			})
+			res.end()
+		}
+	}
+})
 
 io.on('connection', socket => {
 	console.log('user connected')
