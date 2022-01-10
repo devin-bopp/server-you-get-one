@@ -72,6 +72,13 @@ const io = new Server(server, {
 
 io.on('connection', socket => {
 	console.log('USER CONNECTED')
+	socket.on('chat message', msg => {
+        console.log('message: ' + msg)
+        // io.emit('chat message', msg)
+    })
+    socket.on('disconnect', () => {
+        console.log('girlie disconnected')
+    })
 })
 
 
