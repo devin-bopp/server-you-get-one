@@ -17,6 +17,7 @@ const cors = require('cors')
 const exampleRoutes = require('./app/routes/example_routes')
 const userRoutes = require('./app/routes/user_routes')
 const profileRoutes = require('./app/routes/profile_routes')
+const queueRoutes = require('./app/routes/queue_routes')
 
 
 // require middleware
@@ -77,11 +78,11 @@ const io = new Server(server, {
 io.on('connection', socket => {
 	console.log('USER CONNECTED')
 	socket.on('chat message', msg => {
-        console.log('message: ' + msg.message)
+        // console.log('message: ' + msg.message)
         io.emit('broadcast', msg)
     })
     socket.on('disconnect', () => {
-        console.log('girlie disconnected')
+        console.log('user disconnected')
     })
 })
 
@@ -109,6 +110,7 @@ app.use(requestLogger)
 app.use(exampleRoutes)
 app.use(userRoutes)
 app.use(profileRoutes)
+app.use(queueRoutes)
 
 // register error handling middleware
 // note that this comes after the route middlewares, because it needs to be
