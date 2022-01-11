@@ -23,6 +23,17 @@ router.get('/queue', requireToken, (req, res, next) => {
         .catch(next)
 })
 
+// get full sorted queue
+router.get('/queue/sort', (req,res,next) => {
+    Queue.find({})
+        .sort({'dateCreated': 'desc'})
+        .populate({path: 'owner', select: 'email'})
+        .then(queues => {
+            res.status(201).json(queues)
+        })
+        .catch(next)
+})
+
 // add user to queue
 router.post('/queue', requireToken, (req, res, next) => {
     Queue.create(req.body)
