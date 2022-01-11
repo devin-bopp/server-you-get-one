@@ -14,6 +14,15 @@ const requireToken = passport.authenticate('bearer', { session: false })
 
 const router = express.Router()
 
+// get current user's queue position
+router.get('/queue', requireToken, (req, res, next) => {
+    Queue.find({ owner: req.user._id })
+        .then(queue => {
+            res.status(200).json(queue)
+        })
+        .catch(next)
+})
+
 // add user to queue
 router.post('/queue', requireToken, (req, res, next) => {
     Queue.create(req.body)
