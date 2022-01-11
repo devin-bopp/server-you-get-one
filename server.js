@@ -70,11 +70,15 @@ const io = new Server(server, {
 	}
 })
 
+///////////////////////////////////////
+// SOCKET.IO LISTENERS AND FUNCTIONS //
+///////////////////////////////////////
+
 io.on('connection', socket => {
 	console.log('USER CONNECTED')
 	socket.on('chat message', msg => {
-        console.log('message: ' + msg)
-        // io.emit('chat message', msg)
+        console.log('message: ' + msg.message)
+        io.emit('broadcast', msg)
     })
     socket.on('disconnect', () => {
         console.log('girlie disconnected')
