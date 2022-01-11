@@ -24,7 +24,7 @@ router.get('/queue', requireToken, (req, res, next) => {
 })
 
 // get full sorted queue
-router.get('/queue/sort', (req,res,next) => {
+router.get('/queue/sort', requireToken, (req,res,next) => {
     Queue.find({})
         .sort({'dateCreated': 'desc'})
         .populate({path: 'owner', select: 'email'})
