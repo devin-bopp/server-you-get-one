@@ -127,7 +127,6 @@ setInterval(()=> {
         .then(queues => {
             if (queues.length > 0) {
                 io.emit('queue update')
-                console.log('DELETING FIRST IN LINE')
                 queues[0].deleteOne()
             }
             
