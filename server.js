@@ -58,6 +58,7 @@ app.use(
 const http = require('http')
 const server = http.createServer(app)
 const { Server } = require('socket.io')
+const { listeners } = require('process')
 const io = new Server(server, {
 	cors: {
 		origins: ["*"],
@@ -80,9 +81,24 @@ const io = new Server(server, {
 io.on('connection', socket => {
 	console.log('USER CONNECTED')
 	socket.on('chat message', msg => {
-        // console.log('message: ' + msg.message)
+		// console.log('message: ' + msg.message)
         io.emit('broadcast', msg)
     })
+
+
+
+	socket.on('joined queue',  () => {
+		// if the queue is not running, start it
+		console.log('received join queue notif')
+		if (!queueRunning) {
+			startQueueProcessing()
+		} else {
+			console.log('the queue is already running')
+		}
+	})
+
+
+
     socket.on('disconnect', () => {
         console.log('user disconnected')
     })
@@ -121,17 +137,42 @@ app.use(errorHandler)
 
 
 // queue updater interval -- removes the first name from the list and pings all users to update their queues?
-setInterval(()=> {
-    Queue.find({})
-        .sort({'dateCreated': 'desc'})
-        .then(queues => {
-            if (queues.length > 0) {
-                io.emit('queue update')
-                queues[0].deleteOne()
-            }
+
+let queueRunning = false
+
+const startQueueProcessing = () => {
+	console.log('starting timer')
+	queueRunning = true
+	const queueProcessing = setInterval(()=> {
+		Queue.find({})
+			.sort({'dateCreated': 'desc'})
+			.then(queues => {
+				console.log('the query ran again')
+				if (queues.length > 1) {
+					io.emit('queue update')
+					queues[0].deleteOne()
+				} else if (queues.length === 1) {
+					io.emit('queue update')
+					queues[0].deleteOne()
+					clearInterval(queueProcessing)
+					queueRunning = false
+				}
+			})
+	}, 10000) // absurdly large for testing
+}
+
+
+// setInterval(()=> {
+//     Queue.find({})
+//         .sort({'dateCreated': 'desc'})
+//         .then(queues => {
+//             if (queues.length > 0) {
+//                 io.emit('queue update')
+//                 queues[0].deleteOne()
+//             }
             
-        })
-}, 10000) // absurdly large for testing
+//         })
+// }, 10000) // absurdly large for testing
 
 // run API on designated port (4741 in this case)
 server.listen(port, () => {
