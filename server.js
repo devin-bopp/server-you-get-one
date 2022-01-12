@@ -141,7 +141,6 @@ app.use(errorHandler)
 let queueRunning = false
 
 const startQueueProcessing = () => {
-	console.log('starting timer')
 	queueRunning = true
 	const queueProcessing = setInterval(()=> {
 		Queue.find({})
