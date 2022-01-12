@@ -132,7 +132,7 @@ setInterval(()=> {
             }
             
         })
-}, 60000) // absurdly large for testing
+}, 10000) // absurdly large for testing
 
 // run API on designated port (4741 in this case)
 server.listen(port, () => {
