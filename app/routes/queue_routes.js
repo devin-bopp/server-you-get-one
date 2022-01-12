@@ -43,5 +43,18 @@ router.post('/queue', requireToken, (req, res, next) => {
         .catch(next)
 })
 
+// queue updater interval -- removes the first name from the list and pings all users to update their queues?
+setInterval(()=> {
+    Queue.find({})
+        .sort({'dateCreated': 'desc'})
+        .then(queues => {
+            if (queues.length > 0) {
+                console.log('DELETING FIRST IN LINE')
+                queues[0].deleteOne()
+            }
+            
+        })
+}, 60000) // absurdly large for testing
+
 
 module.exports = router
