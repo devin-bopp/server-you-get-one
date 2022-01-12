@@ -1,3 +1,5 @@
+const Queue = require('./app/models/queue')
+
 // define server and client ports
 // used for cors and local port declaration
 const serverDevPort = 8000
@@ -116,6 +118,21 @@ app.use(queueRoutes)
 // note that this comes after the route middlewares, because it needs to be
 // passed any error messages from them
 app.use(errorHandler)
+
+
+// queue updater interval -- removes the first name from the list and pings all users to update their queues?
+setInterval(()=> {
+    Queue.find({})
+        .sort({'dateCreated': 'desc'})
+        .then(queues => {
+            if (queues.length > 0) {
+                io.emit('queue update')
+                console.log('DELETING FIRST IN LINE')
+                queues[0].deleteOne()
+            }
+            
+        })
+}, 60000) // absurdly large for testing
 
 // run API on designated port (4741 in this case)
 server.listen(port, () => {
