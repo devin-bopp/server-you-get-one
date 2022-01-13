@@ -1,4 +1,5 @@
 const Queue = require('./app/models/queue')
+const Profile = require('./app/models/profile')
 
 // define server and client ports
 // used for cors and local port declaration
@@ -85,8 +86,6 @@ io.on('connection', socket => {
         io.emit('broadcast', msg)
     })
 
-
-
 	socket.on('joined queue',  () => {
 		// if the queue is not running, start it
 		console.log('received join queue notif')
@@ -101,7 +100,14 @@ io.on('connection', socket => {
 		io.emit('queue update')
 	})
 
-
+	socket.on('fed frog', (payload) => {
+		// console.log(payload)
+		// console.log('frog has been fed!')
+		Profile.findOneAndUpdate({owner: payload.userId}, {$inc: {fedCount: 1}})
+			.then(profile => {
+				console.log(profile)
+			})
+	})
 
     socket.on('disconnect', () => {
         console.log('user disconnected')

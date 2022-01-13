@@ -10,6 +10,10 @@ const profileSchema = new mongoose.Schema(
             minlength: 6,
             maxlength: 20
         },
+        fedCount: {
+            type: Number,
+            default: 0
+        },
         owner: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',

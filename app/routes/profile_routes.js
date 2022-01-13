@@ -32,4 +32,14 @@ router.post('/profile', requireToken, (req, res, next) => {
         .catch(next)
 })
 
+// update profile
+// router.patch('/profile', requireToken, (req, res, next) => {
+//     Profile.findById(req.user._id)
+//         .then(profile => {
+//             profile.updateOne({$inc: {fedCount: 1}})
+//         })
+//         .then(() => res.status(204))
+//         .catch(next)
+// })
+
 module.exports = router
