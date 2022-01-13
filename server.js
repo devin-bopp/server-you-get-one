@@ -65,7 +65,7 @@ const io = new Server(server, {
 		origins: ["*"],
 		handlePreflightRequest: (req, res) => {
 			res.writeHead(200, {
-				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Origin": "https://you-get-one-server.herokuapp.com",
 				"Access-Control-Allow-Methods": "GET,POST",
 				"Access-Control-Allow-Headers": "you-get-one",
 				"Access-Control-Allow-Credentials": true
