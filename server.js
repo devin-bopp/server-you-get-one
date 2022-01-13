@@ -101,12 +101,8 @@ io.on('connection', socket => {
 	})
 
 	socket.on('fed frog', (payload) => {
-		// console.log(payload)
-		// console.log('frog has been fed!')
 		Profile.findOneAndUpdate({owner: payload.userId}, {$inc: {fedCount: 1}})
-			.then(profile => {
-				console.log(profile)
-			})
+			.then(profile => {})
 	})
 
     socket.on('disconnect', () => {
