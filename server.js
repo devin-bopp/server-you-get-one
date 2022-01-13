@@ -50,9 +50,7 @@ const app = express()
 // set CORS headers on response from this API using the `cors` NPM package
 // `CLIENT_ORIGIN` is an environment variable that will be set on Heroku
 app.use(
-	cors({
-		origin: process.env.CLIENT_ORIGIN || `http://localhost:${clientDevPort}`,
-	})
+	cors()
 )
 
 //
@@ -62,10 +60,10 @@ const { Server } = require('socket.io')
 const { listeners } = require('process')
 const io = new Server(server, {
 	cors: {
-		origins: ["https://you-get-one-server.herokuapp.com"],
+		origins: ["*"],
 		handlePreflightRequest: (req, res) => {
 			res.writeHead(200, {
-				"Access-Control-Allow-Origin": "https://you-get-one-server.herokuapp.com",
+				"Access-Control-Allow-Origin": "*",
 				"Access-Control-Allow-Methods": "GET,POST",
 				"Access-Control-Allow-Headers": "you-get-one",
 				"Access-Control-Allow-Credentials": true
