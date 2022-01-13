@@ -43,6 +43,15 @@ router.post('/queue', requireToken, (req, res, next) => {
         .catch(next)
 })
 
+// remove user from queue
+router.delete('/queue', requireToken, (req, res, next) => {
+    Queue.deleteOne({ owner: req.user._id })
+        .then(deleted => {
+            res.status(201).json({deleted: deleted})
+        })
+        .catch(next)
+})
+
 
 
 

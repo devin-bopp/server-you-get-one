@@ -97,6 +97,10 @@ io.on('connection', socket => {
 		}
 	})
 
+	socket.on('left queue', () => {
+		io.emit('queue update')
+	})
+
 
 
     socket.on('disconnect', () => {
