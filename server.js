@@ -62,7 +62,7 @@ const { Server } = require('socket.io')
 const { listeners } = require('process')
 const io = new Server(server, {
 	cors: {
-		origins: ["*"],
+		origins: ["https://you-get-one-server.herokuapp.com"],
 		handlePreflightRequest: (req, res) => {
 			res.writeHead(200, {
 				"Access-Control-Allow-Origin": "https://you-get-one-server.herokuapp.com",
