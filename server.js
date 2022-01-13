@@ -153,15 +153,17 @@ const startQueueProcessing = () => {
 				console.log('the query ran again')
 				if (queues.length > 1) {
 					io.emit('queue update')
+					io.emit('kick current player')
 					queues[0].deleteOne()
 				} else if (queues.length === 1) {
 					io.emit('queue update')
+					io.emit('kick current player')
 					queues[0].deleteOne()
 					clearInterval(queueProcessing)
 					queueRunning = false
 				}
 			})
-	}, 10000) // absurdly large for testing
+	}, 10000)
 }
 
 
