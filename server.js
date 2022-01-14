@@ -163,7 +163,7 @@ const startQueueProcessing = () => {
 					queueRunning = false
 				}
 			})
-	}, 10000)
+	}, 15000)
 }
 
 
